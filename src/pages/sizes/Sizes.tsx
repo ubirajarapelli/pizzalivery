@@ -1,49 +1,67 @@
 import { Layout } from "../../components/layout/Layout";
 import { Button } from "../../components/button/Button"
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../routes";
+import OrderContext from "../../contexts/OrderContext";
 
 export default function Sizes() {
   const navigate = useNavigate()
+  const { pizzaSize, setPizzaSize } = useContext(OrderContext)
 
   const sizeOptions = [
     {
-      id: 10,
-      value: 'large',
-      text: 'Grande'
+      id: "10",
+      flavours: 1,
+      size: 35,
+      slices: 8,
+      text: "Grande",
     },
     {
-      id: 11,
-      value: 'large-half',
-      text: 'Grande 2 sabores'
+      id: "11",
+      flavours: 2,
+      size: 35,
+      slices: 8,
+      text: "Grande",
     },
     {
-      id: 12,
-      value: 'mid',
-      text: 'Média'
+      id: "20",
+      flavours: 1,
+      size: 28,
+      slices: 4,
+      text: "Média",
     },
     {
-      id: 13,
-      value: 'mid-half',
-      text: 'Média 2 sabores'
+      id: "21",
+      flavours: 2,
+      size: 28,
+      slices: 4,
+      text: "Média",
     },
     {
-      id: 14,
-      value: 'tiny',
-      text: 'Broto'
+      id: "30",
+      flavours: 1,
+      size: 18,
+      slices: 1,
+      text: "Broto",
     },
     {
-      id: 15,
-      value: 'tiny-half',
-      text: 'Broto 2 sabores'
-    }
+      id: "31",
+      flavours: 2,
+      size: 18,
+      slices: 1,
+      text: "Broto",
+    },
   ]
 
-  const [size, setSize] = useState("")
+  const [sizeId, setSizeId] = useState("")
 
-  const handleChange = (event) => {
-    setSize(event.target.id)
+  const getPizzaSize = (sizeId: string) => {
+    return sizeOptions.filter((option) => option.id === sizeId)
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSizeId(event.target.value)
   }
 
   const handleBack = () => {
@@ -51,17 +69,30 @@ export default function Sizes() {
   }
 
   const handleNext = () => {
+    const selectedSize = getPizzaSize(sizeId)
+    setPizzaSize(selectedSize)
     navigate(routes.pizzaFlavour)
   }
 
+  useEffect(() => {
+    if (!pizzaSize) return
+    setSizeId(pizzaSize[0].id)
+  }, [])
+  
+
   return (
     <Layout>
-      <h1>Escolha o tamanho da sua pizza</h1>
+      <h1 tabIndex={0}>Escolha o tamanho da sua pizza</h1>
       <section>
-        {sizeOptions.map(({id, value, text}) => (
+        {sizeOptions.map(({id, size, slices, flavours, text}) => (
           <article key={id}>
-            <input type="radio" id={value} name="sizes" onChange={handleChange}/>
-            <label htmlFor={value}>{text}</label>
+            <input type="radio" id={id} name="sizes" onChange={handleChange} value={id} checked={sizeId === id}/>
+            <label htmlFor={id}>
+              {text} - {flavours} sabores
+              <span>
+                Pizza com {slices} pedaços e {size}cm
+              </span>
+            </label>
           </article>
         ))}
       </section>
