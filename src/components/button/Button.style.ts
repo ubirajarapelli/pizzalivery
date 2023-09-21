@@ -24,7 +24,7 @@ export const ElementButton = styled.button`
     props.inverse &&
     `
     border-color: ${colors.commom.light};
-    background-color: ${colors.commom.light};
+    background-color: transparent;
     color: ${colors.commom.light};
   `}
 
