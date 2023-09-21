@@ -1,9 +1,11 @@
-import { Layout } from "../../components/layout/Layout";
+import { useContext, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { routes } from "../../routes"
 import { Button } from "../../components/button/Button"
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { routes } from "../../routes";
-import OrderContext from "../../contexts/OrderContext";
+import { Layout } from "../../components/layout/Layout"
+import { Title } from "../../components/title/Title"
+import { RadioCard, SizeActionWrapper, SizeContentWrapper } from "./Sizes.style"
+import OrderContext from "../../contexts/OrderContext"
 
 export default function Sizes() {
   const navigate = useNavigate()
@@ -82,10 +84,10 @@ export default function Sizes() {
 
   return (
     <Layout>
-      <h1 tabIndex={0}>Escolha o tamanho da sua pizza</h1>
-      <section>
+      <Title tabIndex={0}>Escolha o tamanho da sua pizza</Title>
+      <SizeContentWrapper>
         {sizeOptions.map(({id, size, slices, flavours, text}) => (
-          <article key={id}>
+          <RadioCard key={id}>
             <input type="radio" id={id} name="sizes" onChange={handleChange} value={id} checked={sizeId === id}/>
             <label htmlFor={id}>
               {text} - {flavours} sabores
@@ -93,13 +95,13 @@ export default function Sizes() {
                 Pizza com {slices} pedaços e {size}cm
               </span>
             </label>
-          </article>
+          </RadioCard>
         ))}
-      </section>
-      <div>
+      </SizeContentWrapper>
+      <SizeActionWrapper>
         <Button inverse="inverse" onClick={handleBack}>Voltar</Button>
         <Button onClick={handleNext}>Escolha o Sabor</Button>
-      </div>
+      </SizeActionWrapper>
     </Layout>
   )
 }
