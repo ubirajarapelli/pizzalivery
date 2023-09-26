@@ -78,7 +78,6 @@ export default function Sizes() {
 
   useEffect(() => {
     if (!pizzaSize) return
-    console.log(pizzaSize)
 
     setSizeId(pizzaSize[0].id)
   }, [])
