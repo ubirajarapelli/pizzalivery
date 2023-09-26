@@ -13,6 +13,16 @@ import Lusa from "../../assets/pizza-flavours/portuguesa.png"
 
 import { convertToCurrency } from "../../helpers/convertToCurrency";
 
+import {
+  FlavourActionWrapper,
+  FlavourCard,
+  FlavourCardDescription,
+  FlavourCardImage,
+  FlavourCardPrice,
+  FlavourCardTitle,
+  FlavourContentWrapper,
+} from "./Flavours.style"
+
 export default function Flavours() {
   const navigate = useNavigate()
   const { pizzaSize, pizzaFlavour, setPizzaFlavour} = useContext(OrderContext)
@@ -96,25 +106,27 @@ export default function Flavours() {
   return (
     <Layout>
       <Title tabIndex={0}>Agora escolha o sabor da sua pizza</Title>
-      <section>
+      <FlavourContentWrapper>
         {flavoursOptions.map(({ id, image, name, description, price }) => (
-          <div key={id} >
-            <img src={image} alt={name} width="200px" />
-            <p>{name}</p>
-            <p>{description}</p>
-            <p>{convertToCurrency(price[pizzaSize[0].slices])}</p>
+          <FlavourCard key={id} selected={id === flavourId ? true : false}>
+            <FlavourCardImage  src={image} alt={name} width="200px" />
+            <FlavourCardTitle>{name}</FlavourCardTitle>
+            <FlavourCardDescription>{description}</FlavourCardDescription>
+            <FlavourCardPrice>
+              {convertToCurrency(price[pizzaSize[0].slices])}
+            </FlavourCardPrice>
             <Button id={id} onClick={handleClick}>
               Selecionar
             </Button>
-          </div>
+          </FlavourCard>
         ))}
-      </section>
-      <div>
+      </FlavourContentWrapper>
+      <FlavourActionWrapper>
         <Button inverse="inverse" onClick={handleBack}>
           Voltar
         </Button>
         <Button onClick={handleNext}>Seguir para o resumo</Button>
-      </div>
+      </FlavourActionWrapper>
     </Layout>
   )
 }
