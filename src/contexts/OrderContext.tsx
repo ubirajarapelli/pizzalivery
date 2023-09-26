@@ -4,9 +4,10 @@ const OrderContext = createContext({})
 
 const OrderContextProvider = ({children}) => {
     const [pizzaSize, setPizzaSize] = useState()
+    const [pizzaFlavour, setPizzaFlavour] = useState()
 
     return (
-        <OrderContext.Provider value={{pizzaSize, setPizzaSize}}>
+        <OrderContext.Provider value={{pizzaSize, setPizzaSize, pizzaFlavour, setPizzaFlavour}}>
             {children}
         </OrderContext.Provider>
     )
