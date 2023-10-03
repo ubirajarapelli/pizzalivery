@@ -6,6 +6,16 @@ import { Button } from "../../components/button/Button";
 import { Layout } from "../../components/layout/Layout";
 import { Title } from "../../components/title/Title";
 import { convertToCurrency } from "../../helpers/convertToCurrency";
+import {
+  SummaryActionWrapper,
+  SummaryAmount,
+  SummaryContentWrapper,
+  SummaryDescription,
+  SummaryDetails,
+  SummaryImage,
+  SummaryPrice,
+  SummaryTitle,
+} from "./Summary.style"
 import { routes } from "../../routes";
 
 export default function Summary() {
@@ -60,25 +70,25 @@ export default function Summary() {
   return (
     <Layout>
       <Title tabIndex={0}>Resumo do pedido</Title>
-      <section>
-        <div>
-          <img  src={summaryData.image} alt="" width="200px"/>
-          <p>{summaryData.name}</p>
-          <p>{summaryData.text} {`(${summaryData.slices}) pedaços`}</p>
-          <p>
+      <SummaryContentWrapper>
+        <SummaryDetails>
+          <SummaryImage  src={summaryData.image} alt="" width="200px"/>
+          <SummaryTitle>{summaryData.name}</SummaryTitle>
+          <SummaryDescription>{summaryData.text} {`(${summaryData.slices}) pedaços`}</SummaryDescription>
+          <SummaryPrice>
             {convertToCurrency(summaryData.price)}
-          </p>
-        </div>
-        <div>
-          <p>{convertToCurrency(summaryAmount)}</p>
-        </div>
-      </section>
-      <div>
+          </SummaryPrice>
+        </SummaryDetails>
+        <SummaryAmount>
+          <SummaryPrice>{convertToCurrency(summaryAmount)}</SummaryPrice>
+        </SummaryAmount>
+      </SummaryContentWrapper>
+      <SummaryActionWrapper>
         <Button inverse="inverse" onClick={handleBack}>
           Voltar
         </Button>
         <Button onClick={handleNext}>Ir para o pagamento</Button>
-      </div>
+      </SummaryActionWrapper>
     </Layout>
   )
 }

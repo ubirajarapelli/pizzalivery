@@ -6,6 +6,7 @@ import Summary from "./pages/summary/Summary"
 import Checkout from "./pages/checkout/Checkout"
 import Login from "./pages/login/Login"
 import { routes } from "./routes"
+import PrivateRoutes from "./components/privateRoutes/PrivateRoutes"
 
 function App() {
   return (
@@ -15,7 +16,9 @@ function App() {
         <Route path={routes.pizzaSize} element={<Sizes />} />
         <Route path={routes.pizzaFlavour} element={<Flavours />} />
         <Route path={routes.summary} element={<Summary />} />
-        <Route path={routes.checkout} element={<Checkout />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path={routes.checkout} element={<Checkout />} />
+        </Route>
         <Route path={routes.login} element={<Login />} />
       </Routes>
     </BrowserRouter>
