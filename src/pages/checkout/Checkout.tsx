@@ -3,6 +3,9 @@ import OrderContext from "../../contexts/OrderContext"
 import { useNavigate } from "react-router-dom"
 import { Layout } from "../../components/layout/Layout"
 import { routes } from "../../routes"
+import { convertToCurrency } from "../../helpers/convertToCurrency"
+import { Title } from "../../components/title/Title"
+import { Button } from "../../components/button/Button"
 
 export default function Checkout() {
   const { pizzaOrder } = useContext(OrderContext)
@@ -16,9 +19,24 @@ export default function Checkout() {
   ]
 
   const [paymentType, setPaymentType] = useState("")
+  const [isDisabled, setIsDisabled] = useState("")
 
   const handleChange = (event) => {
     setPaymentType(event.target.value)
+  }
+
+  const getPaymentOptionType = (paymentType: number) => {
+    if (!paymentType) return
+
+    const filteredValue = paymentOptions.filter(
+      (payment) => payment.value === paymentType
+    )
+
+    return filteredValue[0].value
+  }
+
+  const handleClick = () => {
+    alert("Pedido feito")
   }
 
   useEffect(() => {
@@ -27,18 +45,48 @@ export default function Checkout() {
     }
   }, [])
 
+  // ?. nullish -- pode não existir, mas evita a quebra da página. Apresenta um valor nulo, caso não exista
+
   return (
     <Layout>
-     <h1>Checkout</h1>
-     <label htmlFor="payments">Selecione a forma de pagamento</label>
-     <select name="payments" id="payments" defaultValue={""} onChange={handleChange}>
-      <option disabled value="">Selecione</option>
-      {paymentOptions.map(({ id, value, text}) => (
-        <option key={id} value={value}>
-          {text}
-        </option>
-      ))}
-     </select>
+      <Title tabIndex={0}>Checkout</Title>
+      <section>
+        <h2>Items</h2>
+        <div>
+          <p>
+            {pizzaOrder?.item.name} - {pizzaOrder?.item.size}
+          </p>
+          <p>
+            {convertToCurrency(pizzaOrder?.item.value)}
+          </p>
+        </div>
+      </section>
+      <section>
+        <h2>Forma de Pagamento</h2>
+        <div>
+          <div>
+            <label htmlFor="payments">Selecione a forma de pagamento</label>
+            <select name="payments" id="payments" defaultValue={""} onChange={handleChange}>
+              <option disabled value="">Selecione</option>
+                {paymentOptions.map(({ id, value, text}) => (
+                <option key={id} value={value}>
+                  {text}
+                </option>
+              ))}
+            </select>
+          </div>
+          <p>{getPaymentOptionType(Number(paymentType))}</p>
+        </div>
+      </section>
+      <section>
+        <div>
+          <h2>Total do pedido</h2>
+          <p>{convertToCurrency(pizzaOrder?.total)}</p>
+        </div>
+      </section>
+      <section>
+        <Button onClick={handleClick} disabled={!Boolean(paymentType)}>Fazer pedido</Button>
+      </section>
     </Layout>
   ) 
 }
