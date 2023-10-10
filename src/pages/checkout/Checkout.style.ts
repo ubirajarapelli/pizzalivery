@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { sizes } from "../../styles/Sizes"
 import { colors } from "../../styles/Colors"
-
+// iniciando o cp5
 export const CheckoutItem = styled.section`
   padding: ${sizes.large} 0;
   border-bottom: 1px solid ${colors.text.main};
