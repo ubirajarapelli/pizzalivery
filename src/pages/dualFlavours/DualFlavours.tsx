@@ -110,7 +110,7 @@ export default function DualFlavours() {
         {flavoursOptions.map(({ id, image, name, description, price }) => (
           <FlavourCard key={id} selected={id === flavourId ? true : false}>
             <FlavourCardImage  src={image} alt={name} width="200px" />
-            <FlavourCardTitle>{name}</FlavourCardTitle>
+            <FlavourCardTitle>1/2 {name}</FlavourCardTitle>
             <FlavourCardDescription>{description}</FlavourCardDescription>
             <FlavourCardPrice>
               {convertToCurrency(price[pizzaSize[0].slices])}
