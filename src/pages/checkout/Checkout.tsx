@@ -6,6 +6,12 @@ import { routes } from "../../routes"
 import { convertToCurrency } from "../../helpers/convertToCurrency"
 import { Title } from "../../components/title/Title"
 import { Button } from "../../components/button/Button"
+import {
+  CheckoutAction,
+  CheckoutItem,
+  CheckoutItemFlex,
+  PaymentMethodGroup,
+} from "./Checkout.style"
 
 export default function Checkout() {
   const { pizzaOrder } = useContext(OrderContext)
@@ -50,21 +56,21 @@ export default function Checkout() {
   return (
     <Layout>
       <Title tabIndex={0}>Checkout</Title>
-      <section>
+      <CheckoutItem>
         <h2>Items</h2>
-        <div>
+        <CheckoutItemFlex>
           <p>
             {pizzaOrder?.item.name} - {pizzaOrder?.item.size}
           </p>
           <p>
             {convertToCurrency(pizzaOrder?.item.value)}
           </p>
-        </div>
-      </section>
-      <section>
+        </CheckoutItemFlex>
+      </CheckoutItem>
+      <CheckoutItem>
         <h2>Forma de Pagamento</h2>
-        <div>
-          <div>
+        <CheckoutItemFlex>
+          <PaymentMethodGroup>
             <label htmlFor="payments">Selecione a forma de pagamento</label>
             <select name="payments" id="payments" defaultValue={""} onChange={handleChange}>
               <option disabled value="">Selecione</option>
@@ -74,19 +80,19 @@ export default function Checkout() {
                 </option>
               ))}
             </select>
-          </div>
+          </PaymentMethodGroup>
           <p>{getPaymentOptionType(Number(paymentType))}</p>
-        </div>
-      </section>
-      <section>
-        <div>
+        </CheckoutItemFlex>
+      </CheckoutItem>
+      <CheckoutItem>
+        <CheckoutItemFlex>
           <h2>Total do pedido</h2>
           <p>{convertToCurrency(pizzaOrder?.total)}</p>
-        </div>
-      </section>
-      <section>
+        </CheckoutItemFlex>
+      </CheckoutItem>
+      <CheckoutAction>
         <Button onClick={handleClick} disabled={!Boolean(paymentType)}>Fazer pedido</Button>
-      </section>
+      </CheckoutAction>
     </Layout>
   ) 
 }

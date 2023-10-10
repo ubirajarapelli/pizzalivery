@@ -21,7 +21,6 @@ type PizzaFlavourType = {
 }
 
 type PizzaOrderType = {
-    
     item: {
         id: string
         image: string
