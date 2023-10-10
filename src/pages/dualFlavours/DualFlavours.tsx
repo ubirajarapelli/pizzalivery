@@ -21,7 +21,7 @@ import {
   FlavourCardPrice,
   FlavourCardTitle,
   FlavourContentWrapper,
-} from "./DualFlavours.style"
+} from "../flavours/Flavours.style"
 
 export default function DualFlavours() {
   const navigate = useNavigate()
