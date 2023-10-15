@@ -57,15 +57,10 @@ export default function Sizes() {
   ]
 
   const [sizeId, setSizeId] = useState("")
-  // const [sizeFlavour, setSizeFlavour] = useState("")
 
   const getPizzaSize = (sizeId: string) => {
     return sizeOptions.filter((option) => option.id === sizeId)
   }
-
-  // const getPizzaFlavour = (sizeFlavour: number) => {
-  //   return sizeOptions.filter((option) => option.flavours === sizeFlavour)
-  // }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSizeId(event.target.value)
