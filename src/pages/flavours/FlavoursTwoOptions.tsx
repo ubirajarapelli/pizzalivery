@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/button/Button";
 import { Layout } from "../../components/layout/Layout";
@@ -20,10 +20,10 @@ import {
 } from "./Flavours.styles";
 import { Title } from "../../components/title/Title";
 
-export default function Flavours() {
+export default function FlavoursTwoOptions() {
   const navigate = useNavigate();
   const { pizzaSize, pizzaFlavour, setPizzaFlavour } = useContext(OrderContext);
-  const [selectedQuantities, setSelectedQuantities] = useState({});
+  const [selectedFlavours, setSelectedFlavours] = useState([]);
   const flavoursOptions = [
     {
       id: "10",
@@ -79,19 +79,14 @@ export default function Flavours() {
     return flavoursOptions.find((flavour) => flavour.id === id);
   };
 
-  const handleIncreaseClick = (event) => {
+  const handleClick = (event) => {
     const id = event.target.id;
-    const newQuantities = { ...selectedQuantities };
-    newQuantities[id] = (newQuantities[id] || 0) + 1;
-    setSelectedQuantities(newQuantities);
-  };
-
-  const handleDecreaseClick = (event) => {
-    const id = event.target.id;
-    const newQuantities = { ...selectedQuantities };
-    if (newQuantities[id] && newQuantities[id] > 0) {
-      newQuantities[id] -= 1;
-      setSelectedQuantities(newQuantities);
+    if (selectedFlavours.includes(id)) {
+      setSelectedFlavours((prevSelectedFlavours) =>
+        prevSelectedFlavours.filter((flavourId) => flavourId !== id)
+      );
+    } else {
+      setSelectedFlavours((prevSelectedFlavours) => [...prevSelectedFlavours, id]);
     }
   };
 
@@ -100,28 +95,20 @@ export default function Flavours() {
   };
 
   const handleNext = () => {
-    const selectedFlavoursData = Object.keys(selectedQuantities).reduce(
-      (flavours, id) => {
-        const pizzaFlavour = getPizzaFlavour(id);
-        const quantity = selectedQuantities[id];
-        for (let i = 0; i < quantity; i++) {
-          flavours.push(pizzaFlavour);
-        }
-        return flavours;
-      },
-      []
-    );
-    setPizzaFlavour(selectedFlavoursData);
-    navigate(routes.summary);
+    if (selectedFlavours.length === 2) {
+      const selectedFlavoursData = selectedFlavours.map((flavourId) =>
+        getPizzaFlavour(flavourId)
+      );
+      setPizzaFlavour(selectedFlavoursData);
+      navigate(routes.summary);
+    } else {
+      alert("Selecione dois sabores!");
+    }
   };
 
   useEffect(() => {
     if (pizzaFlavour && pizzaFlavour.length > 0) {
-      const quantities = {};
-      pizzaFlavour.forEach((flavour) => {
-        quantities[flavour.id] = (quantities[flavour.id] || 0) + 1;
-      });
-      setSelectedQuantities(quantities);
+      setSelectedFlavours(pizzaFlavour.map((flavour) => flavour.id));
     }
   }, [pizzaFlavour]);
 
@@ -130,22 +117,16 @@ export default function Flavours() {
       <Title tabIndex={0}>Agora escolha o sabor da sua pizza</Title>
       <FlavourContentWrapper>
         {flavoursOptions.map(({ id, image, name, description, price }) => (
-          <FlavourCard key={id} selected={selectedQuantities[id] > 0}>
+          <FlavourCard key={id} selected={selectedFlavours.includes(id)}>
             <FlavourCardImage src={image} alt={name} />
             <FlavourCardTitle>{name}</FlavourCardTitle>
             <FlavourCardDescription>{description}</FlavourCardDescription>
             <FlavourCardPrice>
               {convertToCurrency(price[pizzaSize[0].slices])}
             </FlavourCardPrice>
-            <div>
-              <Button id={id} onClick={handleDecreaseClick}>
-                -
-              </Button>
-              {selectedQuantities[id] || 0}
-              <Button id={id} onClick={handleIncreaseClick}>
-                +
-              </Button>
-            </div>
+            <Button id={id} onClick={handleClick}>
+              {selectedFlavours.includes(id) ? "Selecionado" : "Selecionar"}
+            </Button>
           </FlavourCard>
         ))}
       </FlavourContentWrapper>

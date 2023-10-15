@@ -57,13 +57,18 @@ export default function Sizes() {
   ]
 
   const [sizeId, setSizeId] = useState("")
+  const [sizePizzaOption, setSizePizzaOption] = useState("")
 
   const getPizzaSize = (id: string) => {
     return sizeOptions.filter((option) => option.id === id)
   }
+  const getPizzaSizeOptions = (flavours: number) => {
+    return sizeOptions.filter((option) => option.flavours === flavours)
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSizeId(event.target.value)
+    setSizePizzaOption(event.target.value)
   }
 
   const handleBack = () => {
@@ -71,10 +76,17 @@ export default function Sizes() {
   }
 
   const handleNext = () => {
-    const selectedSize = getPizzaSize(sizeId)
+    const selectedSize = getPizzaSize(sizeId);
     setPizzaSize(selectedSize)
-    navigate(routes.pizzaFlavour)
+  
+    if (selectedSize[0].flavours === 1) {
+      navigate(routes.pizzaFlavour);
+    } else {
+      navigate(routes.pizzaFlavourTwoOptions);
+    }
   }
+  
+  
 
   useEffect(() => {
     if (!pizzaSize) return
