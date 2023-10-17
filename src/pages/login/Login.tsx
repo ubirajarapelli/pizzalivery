@@ -18,8 +18,29 @@ export default function Login() {
     setPassword(event.target.value)
   }
 
+  const toLogin = (userPayload) => {
+    try {
+      fetch("http://localhost:8000/user/login", {
+        method: "POST",
+        body: JSON.stringify(userPayload),
+      })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      console.log("finnaly")
+    }
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault()
+
+    const payload = {
+      user: login,
+      pass: password,
+    }
+
+    toLogin(payload)
+
     sessionStorage.setItem("token", `${login}.${password}`)
 
     if (pizzaOrder) {
